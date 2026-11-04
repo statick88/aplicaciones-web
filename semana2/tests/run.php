@@ -6,6 +6,7 @@ require_once __DIR__ . '/../models/Cliente.php';
 require_once __DIR__ . '/../models/ValidadorClientes.php';
 require_once __DIR__ . '/../interfaces/RepositorioClientes.php';
 require_once __DIR__ . '/../repositories/ClienteRepositorioMemoria.php';
+require_once __DIR__ . '/../controllers/ClienteController.php';
 
 /**
  * Tests unitarios del CRUD de Cliente (sin base de datos).
@@ -107,6 +108,50 @@ $tests = [
         return $validador->validar('Ana Pérez', 'ana@correo.com') === [];
     },
 ];
+
+foreach (['abc', '1foo', '0', '-1'] as $idInvalido) {
+    $tests["editar rechaza el ID inválido {$idInvalido} sin consultar ni modificar datos"] = function () use ($idInvalido): bool {
+        $repo = new class extends ClienteRepositorioMemoria {
+            public array $consultas = [];
+            public function consultar(int $id): ?Cliente
+            {
+                $this->consultas[] = $id;
+                return parent::consultar($id);
+            }
+        };
+        $repo->registrar(new Cliente(1, 'Ana Pérez', 'ana@correo.com'));
+        $antes = serialize($repo->listar());
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET = ['editar' => $idInvalido];
+        ob_start();
+        try {
+            (new ClienteController($repo, new ValidadorClientes()))->index();
+            $html = ob_get_contents();
+        } finally {
+            ob_end_clean();
+            $_GET = [];
+        }
+        return str_contains($html, 'El identificador del cliente no es válido.')
+            && !str_contains($html, 'value="actualizar"')
+            && $repo->consultas === []
+            && serialize($repo->listar()) === $antes;
+    };
+}
+$tests['editar conserva el comportamiento de un ID válido'] = function (): bool {
+    $repo = new ClienteRepositorioMemoria();
+    $repo->registrar(new Cliente(1, 'Ana Pérez', 'ana@correo.com'));
+    $_SERVER['REQUEST_METHOD'] = 'GET';
+    $_GET = ['editar' => '1'];
+    ob_start();
+    try {
+        (new ClienteController($repo, new ValidadorClientes()))->index();
+        $html = ob_get_contents();
+    } finally {
+        ob_end_clean();
+        $_GET = [];
+    }
+    return str_contains($html, 'value="actualizar"') && str_contains($html, 'value="Ana Pérez"');
+};
 
 $failures = [];
 

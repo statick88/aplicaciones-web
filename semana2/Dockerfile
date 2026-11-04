@@ -2,8 +2,17 @@ FROM php:8.5-apache
 
 WORKDIR /var/www/html
 
+# Extensión mysqli: la base de datos vive en el servicio `db` de compose.yaml.
+RUN docker-php-ext-install mysqli
+
 COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY index.php style.css statick.png favicon.svg Calculator.php /var/www/html/
+COPY index.php style.css favicon.png logo-uniandes.png /var/www/html/
+COPY config/ /var/www/html/config/
+COPY models/ /var/www/html/models/
+COPY interfaces/ /var/www/html/interfaces/
+COPY repositories/ /var/www/html/repositories/
+COPY controllers/ /var/www/html/controllers/
+COPY views/ /var/www/html/views/
 COPY tests/ /var/www/html/tests/
 
 RUN chown -R www-data:www-data /var/www \

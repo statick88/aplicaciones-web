@@ -4,4 +4,36 @@ services:
       context: .
     ports:
       - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: ${DB_NAME:-sexto}
+      DB_USER: ${DB_USER:-root}
+      DB_PASS: ${DB_PASS:-root}
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
+
+  db:
+    image: mariadb:12.3
+    ports:
+      - "3306:3306"  # solo para desarrollo local
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_PASS:-root}
+      MARIADB_DATABASE: ${DB_NAME:-sexto}
+      APP_DB_USER: ${DB_USER:-root}
+      APP_DB_PASS: ${DB_PASS:-root}
+    volumes:
+      - ./docker/initdb:/docker-entrypoint-initdb.d:ro
+      - db_datos:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+      start_period: 15s
+    restart: unless-stopped
+
+volumes:
+  db_datos:
