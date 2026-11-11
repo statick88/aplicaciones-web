@@ -1,0 +1,72 @@
+﻿@*
+  Maqueta compartida por todas las vistas de la Semana 3.
+  Concentra la identidad UNIANDES (logo institucional), la hoja de
+  estilos propia y el pie de página; cada vista solo aporta su contenido
+  dentro de RenderBody().
+
+  Nota: esto es un comentario de Razor (@* ... *) y no un comentario
+  HTML (<!-- ... -->). Si se usara HTML y dentro apareciera la llamada
+  a RenderBody(), Razor la ejecutaría igualmente y volcaría la vista
+  completa dentro del comentario, dejando el <main> vacío.
+*@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!--
+      charset=utf-8 en dos frentes:
+        1. aquí, para que el navegador interprete bien el HTML aunque
+           la cabecera HTTP no llegue (por ejemplo al guardar la página);
+        2. en Program.cs, para que también los .css y .js se sirvan
+           con `charset=utf-8` y nadie tenga que adivinar la codificación.
+    -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — CRUD de clientes | Aplicaciones Web</title>
+    <!-- favicon.png: la imagen de marca de la universidad -->
+    <link rel="icon" type="image/png" href="~/img/favicon.png" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    @* Enlace de salto: primer foco de teclado de la página, para que
+       quien navega con Tab no recorra el encabezado en cada vista. *@
+    <a class="salto-contenido" href="#contenido">Saltar al contenido</a>
+
+    <header class="encabezado">
+        <div class="encabezado__marca">
+            <img class="encabezado__logo"
+                 src="~/img/logo-uniandes.png"
+                 alt="Universidad Regional Autónoma de los Andes — UNIANDES"
+                 asp-append-version="true" />
+            <div class="encabezado__texto">
+                <p class="encabezado__curso">Aplicaciones Web</p>
+                <p class="encabezado__carrera">Carrera de Software — UNIANDES</p>
+            </div>
+        </div>
+
+        @* Chip de navegación: deja claro en qué práctica se está. *@
+        <p class="encabezado__chip">
+            <span class="encabezado__chip-numero">Semana 3</span>
+            <span class="encabezado__chip-texto">CRUD de clientes</span>
+        </p>
+    </header>
+
+    <main id="contenido" class="panel" tabindex="-1">
+        @* El contenido propio de cada página entra aquí. *@
+        @RenderBody()
+    </main>
+
+    <footer class="pie">
+        <p>
+            CRUD de clientes en <strong>C# / ASP.NET Core</strong> + <strong>MySQL 8.4</strong>,
+            ejecutándose con Docker Compose.
+        </p>
+        <p class="pie__nota">
+            Entorno académico local, no apto para producción: las credenciales son de desarrollo
+            y no hay autenticación de usuarios.
+        </p>
+    </footer>
+
+    @* Solo mejora progresiva (confirmación de borrado); sin él el CRUD sigue funcionando. *@
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+# =====================================================================
+# .gitignore de Semana 3 (CRUD de clientes en C#/.NET + MySQL)
+#
+# Espejo local de las reglas de la raíz: aunque esta carpeta viaje sola,
+# los artefactos de gentle-ai siguen sin cargarse al repositorio.
+# =====================================================================
+
+# ---- Artefactos de gentle-ai / agentes ----
+.gentle-ai/
+gentle-ai/
+.git/gentle-ai/
+.atl/
+.engram/
+.odd/
+odd/
+.gentle-shell/
+.gentle-dot/
+.playwright-cli/
+.playwright-mcp/
+
+# ---- Salidas de compilación de .NET (generadas en cada build) ----
+bin/
+obj/
+out/
+publish/
+*.user
+*.suo
+
+# ---- Entorno local, editores y registros ----
+.env
+.vs/
+.vscode/
+.idea/
+*.log
+.DS_Store

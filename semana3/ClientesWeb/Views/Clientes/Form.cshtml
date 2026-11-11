@@ -1,0 +1,185 @@
+@* ====================================================================
+   Formulario compartido por CREAR (GET /Clientes/Crear) y
+   ACTUALIZAR (GET /Clientes/Editar/{id}).
+
+   La vista decide qué hacer según Model.Id: 0 = alta, >0 = edición.
+   Así no hay dos plantillas que mantener al día y las reglas de
+   validación y los nombres de campo no pueden divergir.
+
+   Los 12 campos se agrupan en tres <fieldset> temáticos. No es solo
+   estética: un fieldset con su <legend> da a cada bloque un nombre
+   accesible que los lectores de pantalla anuncian antes de recorrerlo,
+   y la rejilla interna reparte las columnas dentro de su propio bloque
+   en lugar de mezclar todo en una sola lista.
+   ==================================================================== *@
+@model ClienteInput
+@{
+    var esEdicion = Model.Id > 0;
+    ViewData["Title"] = esEdicion ? "Editar cliente" : "Nuevo cliente";
+
+    // Acción de POST a la que se envía el formulario.
+    var accion = esEdicion ? "Editar" : "Crear";
+}
+
+<section class="barra">
+    <div>
+        <h1>@(esEdicion ? "Editar cliente" : "Registrar cliente")</h1>
+        <p class="subtitulo">
+            @(esEdicion
+                ? $"Ficha #{Model.Id}: modifica los campos y guarda los cambios."
+                : "Completa los 12 campos de la ficha; los marcados como opcionales pueden quedar vacíos.")
+        </p>
+    </div>
+    <a class="boton boton--secundario" asp-controller="Clientes" asp-action="Index">Volver al listado</a>
+</section>
+
+@* Resumen de errores. Se pinta desde ViewData.ModelState y no desde
+   el tag helper de resumen para que el bloque desaparezca por completo
+   cuando no hay problemas, sin dejar una caja vacía en pantalla. *@
+@if (!ViewData.ModelState.IsValid)
+{
+    var mensajes = ViewData.ModelState.Values
+        .SelectMany(estado => estado.Errors)
+        .Select(error => error.ErrorMessage)
+        .Where(texto => !string.IsNullOrWhiteSpace(texto))
+        .Distinct()
+        .ToList();
+
+    if (mensajes.Count > 0)
+    {
+        <div class="alerta alerta--error" role="alert">
+            <strong>Revisa los siguientes datos:</strong>
+            <ul>
+                @foreach (var texto in mensajes)
+                {
+                    <li>@texto</li>
+                }
+            </ul>
+        </div>
+    }
+}
+
+@*
+  `novalidate` desactiva los mensajes nativos del navegador (que están
+  en el idioma del sistema) para que solo se muestren los del
+  servidor, todos en español. El token antifalsificación lo inyecta el
+  tag helper automáticamente al haber `asp-action`.
+*@
+<form class="formulario"
+      asp-controller="Clientes"
+      asp-action="@accion"
+      asp-route-id="@(esEdicion ? Model.Id : (int?)null)"
+      method="post"
+      novalidate>
+
+    @* El id viaja también en el cuerpo: la ruta manda, pero el modelo
+       debe llegar completo a Editar(int id, ClienteInput entrada). *@
+    <input type="hidden" asp-for="Id" />
+
+    @* ---------- Bloque 1: quién es el cliente ---------- *@
+    <fieldset class="grupo">
+        <legend class="grupo__titulo">Identificación</legend>
+
+        <div class="rejilla">
+            <div class="campo">
+                <label asp-for="Cedula">Cédula <span class="obligatorio">obligatorio</span></label>
+                <input asp-for="Cedula" inputmode="numeric" placeholder="10 dígitos" autocomplete="off" />
+                <span class="campo__error" asp-validation-for="Cedula"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="TipoCliente">Tipo de cliente <span class="obligatorio">obligatorio</span></label>
+                @* El catálogo sale de TipoClientes.Valores, la misma fuente
+                   que usa la validación: no puede haber valores en el
+                   formulario que el validador no acepte. *@
+                <select asp-for="TipoCliente"
+                        asp-items="@(new SelectList(TipoClientes.Valores, Model.TipoCliente))">
+                </select>
+                <span class="campo__error" asp-validation-for="TipoCliente"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Nombre">Nombre <span class="obligatorio">obligatorio</span></label>
+                <input asp-for="Nombre" placeholder="Nombre de pila" autocomplete="given-name" />
+                <span class="campo__error" asp-validation-for="Nombre"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Apellido">Apellido <span class="obligatorio">obligatorio</span></label>
+                <input asp-for="Apellido" placeholder="Apellido de familia" autocomplete="family-name" />
+                <span class="campo__error" asp-validation-for="Apellido"></span>
+            </div>
+        </div>
+    </fieldset>
+
+    @* ---------- Bloque 2: cómo localizarlo ---------- *@
+    <fieldset class="grupo">
+        <legend class="grupo__titulo">Contacto</legend>
+
+        <div class="rejilla">
+            <div class="campo">
+                <label asp-for="Correo">Correo electrónico <span class="obligatorio">obligatorio</span></label>
+                <input asp-for="Correo" type="email" placeholder="ejemplo@correo.com" autocomplete="email" />
+                <span class="campo__error" asp-validation-for="Correo"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Telefono">Teléfono <span class="opcional">opcional</span></label>
+                <input asp-for="Telefono" inputmode="tel" placeholder="0987654321" autocomplete="tel" />
+                <span class="campo__error" asp-validation-for="Telefono"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="Ciudad">Ciudad <span class="opcional">opcional</span></label>
+                <input asp-for="Ciudad" placeholder="Ambato" autocomplete="address-level2" />
+                <span class="campo__error" asp-validation-for="Ciudad"></span>
+            </div>
+
+            <div class="campo campo--ancho">
+                <label asp-for="Direccion">Dirección <span class="opcional">opcional</span></label>
+                <input asp-for="Direccion" placeholder="Calle y número" autocomplete="street-address" />
+                <span class="campo__error" asp-validation-for="Direccion"></span>
+            </div>
+        </div>
+    </fieldset>
+
+    @* ---------- Bloque 3: datos comerciales y notas ---------- *@
+    <fieldset class="grupo">
+        <legend class="grupo__titulo">Comercial y observaciones</legend>
+
+        <div class="rejilla">
+            <div class="campo">
+                <label asp-for="FechaNacimiento">Fecha de nacimiento <span class="opcional">opcional</span></label>
+                <input asp-for="FechaNacimiento" type="date" />
+                <span class="campo__error" asp-validation-for="FechaNacimiento"></span>
+            </div>
+
+            <div class="campo">
+                <label asp-for="LimiteCredito">Límite de crédito <span class="opcional">opcional</span></label>
+                <input asp-for="LimiteCredito" inputmode="decimal" placeholder="1500.00" />
+                <span class="campo__error" asp-validation-for="LimiteCredito"></span>
+            </div>
+
+            <div class="campo campo--ancho">
+                <label asp-for="Observaciones">Observaciones <span class="opcional">opcional</span></label>
+                <textarea asp-for="Observaciones" rows="2" placeholder="Notas internas del cliente"></textarea>
+                <span class="campo__error" asp-validation-for="Observaciones"></span>
+            </div>
+
+            <div class="campo campo--ancho">
+                <label class="casilla" asp-for="Activo">
+                    <input asp-for="Activo" />
+                    <span>Cliente activo</span>
+                </label>
+                <span class="campo__error" asp-validation-for="Activo"></span>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="acciones">
+        <button type="submit" class="boton boton--primario">
+            @(esEdicion ? "Guardar cambios" : "Registrar cliente")
+        </button>
+        <a class="boton boton--secundario" asp-controller="Clientes" asp-action="Index">Cancelar</a>
+    </div>
+</form>

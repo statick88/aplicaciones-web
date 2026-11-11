@@ -1,0 +1,7 @@
+  ClientesWeb -> /home/statick/Projects/tareas/aplicaciones-web-worktrees/semana3-crud-dotnet/semana3/ClientesWeb/bin/Debug/net10.0/ClientesWeb.dll
+  ClientesWeb.Tests -> /home/statick/Projects/tareas/aplicaciones-web-worktrees/semana3-crud-dotnet/semana3/tests/ClientesWeb.Tests/bin/Debug/net10.0/ClientesWeb.Tests.dll
+Serie de pruebas para /home/statick/Projects/tareas/aplicaciones-web-worktrees/semana3-crud-dotnet/semana3/tests/ClientesWeb.Tests/bin/Debug/net10.0/ClientesWeb.Tests.dll (.NETCoreApp,Version=v10.0)
+1 archivos de prueba en total coincidieron con el patrón especificado.
+
+Correctas! - Con error:     0, Superado:    44, Omitido:     0, Total:    44, Duración: 77 ms - ClientesWeb.Tests.dll (net10.0)
+DOTNET_TEST_EXIT=0

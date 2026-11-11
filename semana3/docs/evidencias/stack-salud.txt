@@ -1,0 +1,7 @@
+UTC: 2026-11-11T05:26:14Z
+semana3-evidencias-db-1 running healthy 33060/tcp, 127.0.0.1:13307->3306/tcp
+semana3-evidencias-web-1 running healthy 127.0.0.1:32770->8080/tcp
+{"status":"healthy"}
+HTTP=200
+/css/site.css Content-Type: text/css; charset=utf-8
+/js/site.js Content-Type: text/javascript; charset=utf-8

@@ -1,0 +1,46 @@
+# =====================================================================
+# .gitignore de la raíz del repositorio
+#
+# Objetivo principal de esta entrega (consigna de Semana 3):
+# "Los artefactos de gentle-ai no se cargan, toma muy en cuenta en el
+#  .gitignore y .dockerignore."
+#
+# "No se cargan" significa dos cosas a la vez:
+#   1. git no los rastrea ni los incluye en un commit;
+#   2. Docker no los recibe en el contexto de construcción (eso se
+#      resuelve en semana3/.dockerignore, porque el contexto de build
+#      es el directorio de la semana y no la raíz).
+# =====================================================================
+
+# ---- Artefactos de gentle-ai / agentes (nunca al repositorio) ----
+.gentle-ai/
+gentle-ai/
+.git/gentle-ai/
+.atl/
+.engram/
+.odd/
+odd/
+.gentle-shell/
+.gentle-dot/
+.playwright-cli/
+.playwright-mcp/
+
+# ---- Salidas de compilación de cualquier lenguaje ----
+bin/
+obj/
+out/
+publish/
+*.user
+*.suo
+
+# ---- Entorno local y editores ----
+.env
+.vs/
+.vscode/
+.idea/
+*.log
+.DS_Store
+
+# ---- Estado de trabajo que no es entregable ----
+.progress
+.agents.md

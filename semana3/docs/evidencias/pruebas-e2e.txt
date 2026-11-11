@@ -1,0 +1,5 @@
+Entorno: proyecto Docker aislado semana3-evidencias, MySQL nuevo; imagen corregida.
+"PASS: brand assets, UTF-8 (HTML/CSS/JS), invalid email, create/read/update/delete (PRG), escaped XSS, malformed edit IDs and /health"
+
+CLI_EXIT=0
+Verificador HTTP independiente R3: PASS, EXIT=0. Crear/Editar: HTTP 200 sin redirección; mensajes españoles de crédito/fecha exactos; conteo 2->2->2; 12 campos sin cambios.

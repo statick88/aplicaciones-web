@@ -1,0 +1,112 @@
+@* ====================================================================
+   Listado de clientes: la operación CONSULTAR del CRUD.
+
+   El modelo que recibe es la colección completa devuelta por
+   IRepositorioClientes.ListarAsync(); aquí solo se presenta, con
+   escapado automático de Razor (ningún valor se imprime con Html.Raw).
+
+   Cada <td> lleva un atributo `data-label`: en pantallas estrechas la
+   hoja de estilos convierte la tabla en tarjetas y usa ese texto como
+   rótulo de cada dato, de modo que no se pierde ninguna columna.
+   ==================================================================== *@
+@model IReadOnlyList<Cliente>
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<section class="barra">
+    <div>
+        <h1>Gestión de clientes</h1>
+        <p class="subtitulo">CRUD en C#/.NET Core + MySQL — Aplicaciones Web, Semana 3</p>
+    </div>
+    <a class="boton boton--primario" asp-controller="Clientes" asp-action="Crear">Nuevo cliente</a>
+</section>
+
+@* Mensajes de las operaciones anteriores (patrón PRG: llegan por TempData).
+   role="status" anuncia el éxito a los lectores de pantalla sin
+   interrumpir; role="alert" lo hace en los errores. *@
+@if (TempData["Mensaje"] is string mensaje)
+{
+    <div class="alerta alerta--ok" role="status">@mensaje</div>
+}
+@if (TempData["Error"] is string error)
+{
+    <div class="alerta alerta--error" role="alert">@error</div>
+}
+
+<h2 id="listado">Clientes registrados (@Model.Count)</h2>
+
+@if (Model.Count == 0)
+{
+    <div class="estado-vacio">
+        <p>Todavía no hay clientes registrados.</p>
+        <a class="boton boton--primario" asp-controller="Clientes" asp-action="Crear">Registrar el primero</a>
+    </div>
+}
+else
+{
+    @* La tabla tiene las 12 columnas de datos; en pantallas estrechas
+       se convierte en tarjetas en lugar de ocultar información. *@
+    <div class="tabla-contenedor">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Cédula</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Ciudad</th>
+                    <th scope="col">Nacimiento</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col" class="num">Límite de crédito</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Observaciones</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cliente in Model)
+                {
+                    <tr>
+                        <td data-label="ID">@cliente.Id</td>
+                        <td data-label="Cédula">@cliente.Cedula</td>
+                        <td data-label="Nombre">@cliente.Nombre</td>
+                        <td data-label="Apellido">@cliente.Apellido</td>
+                        <td data-label="Correo"><a href="mailto:@cliente.Correo">@cliente.Correo</a></td>
+                        <td data-label="Teléfono">@(cliente.Telefono ?? "—")</td>
+                        <td data-label="Dirección">@(cliente.Direccion ?? "—")</td>
+                        <td data-label="Ciudad">@(cliente.Ciudad ?? "—")</td>
+                        <td data-label="Nacimiento">@(cliente.FechaNacimiento?.ToString("yyyy-MM-dd") ?? "—")</td>
+                        <td data-label="Tipo">@cliente.TipoCliente</td>
+                        <td data-label="Límite de crédito" class="num">@cliente.LimiteCredito.ToString("N2")</td>
+                        <td data-label="Estado">
+                            <span class="estado @(cliente.Activo ? "estado--activo" : "estado--inactivo")">
+                                @(cliente.Activo ? "Activo" : "Inactivo")
+                            </span>
+                        </td>
+                        <td data-label="Observaciones">@(cliente.Observaciones ?? "—")</td>
+                        <td data-label="Acciones">
+                            <div class="acciones-fila">
+                                <a asp-controller="Clientes" asp-action="Editar" asp-route-id="@cliente.Id">Editar</a>
+
+                                @* El borrado es POST (nunca GET) y lleva el token
+                                   antifalsificación que genera el tag helper. *@
+                                <form asp-controller="Clientes"
+                                      asp-action="Eliminar"
+                                      asp-route-id="@cliente.Id"
+                                      method="post"
+                                      class="formulario-fila"
+                                      data-confirm="¿Eliminar a @cliente.NombreCompleto? Esta acción no se puede deshacer.">
+                                    <button type="submit" class="enlace-peligro">Eliminar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

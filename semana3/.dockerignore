@@ -1,0 +1,41 @@
+# =====================================================================
+# .dockerignore de Semana 3
+#
+# El contexto de `docker build` es el directorio `semana3/`, así que
+# este archivo es el que evita que los artefactos de gentle-ai y toda
+# la basura de compilación lleguen a la imagen (consigna: "los
+# artefactos de gentle-ai no se cargan").
+# =====================================================================
+
+# ---- Artefactos de gentle-ai / agentes ----
+.gentle-ai/
+gentle-ai/
+.git/
+.gitignore
+.gitattributes
+.atl/
+.engram/
+.odd/
+odd/
+.gentle-shell/
+.gentle-dot/
+.playwright-cli/
+.playwright-mcp/
+
+# ---- Salidas de compilación .NET: se regeneran dentro de la imagen ----
+**/bin/
+**/obj/
+**/out/
+**/publish/
+**/.vs/
+**/*.user
+
+# ---- Documentación, capturas y pruebas: no van a la imagen runtime ----
+**/*.md
+docs/
+tests/
+**/*.log
+.env
+.vscode/
+.idea/
+.DS_Store

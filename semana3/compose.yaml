@@ -1,0 +1,59 @@
+# =====================================================================
+# Semana 3 — CRUD de clientes en C#/.NET Core + MySQL, en Docker Compose.
+#
+# Estructura equivalente a semana2/compose.yaml, con dos diferencias
+# deliberadas:
+#   * el servicio `web` es ASP.NET Core en lugar de PHP+Apache;
+#   * los puertos publicados son 8081 (web) y 3307 (MySQL) para poder
+#     levantar Semana 1/2 (8080/3306) al mismo tiempo sin choque.
+# =====================================================================
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:8081:8080" # solo el host accede a la web académica
+    environment:
+      # La aplicación construye su cadena de conexión con estas
+      # variables, igual que en Semana 2 (ver ClientesWeb/Data/CadenaConexion.cs).
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      DB_HOST: db
+      DB_PORT: "3306" # puerto interno de la red de compose, no el publicado
+      DB_NAME: ${DB_NAME:-semana3}
+      DB_USER: ${DB_USER:-root}
+      DB_PASS: ${DB_PASS:-root}
+    depends_on:
+      db:
+        # No arranca la web hasta que MySQL responda: evita la carrera
+        # "la app consulta antes de que exista el esquema".
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.4
+    ports:
+      - "127.0.0.1:3307:3306" # solo para desarrollo local (SQLTools/DBeaver)
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS:-root}
+      MYSQL_DATABASE: ${DB_NAME:-semana3}
+      # Consumido por docker/initdb/03-usuario.sh cuando DB_USER != root.
+      DB_USER: ${DB_USER:-root}
+      DB_PASS: ${DB_PASS:-root}
+    volumes:
+      # Los .sql/.sh de este directorio solo se ejecutan en el primer
+      # arranque de un volumen nuevo.
+      - ./docker/initdb:/docker-entrypoint-initdb.d:ro
+      - db_datos:/var/lib/mysql
+    healthcheck:
+      # `mysqladmin ping` devuelve 0 cuando el servidor acepta
+      # conexiones; sin esto, depends_on: service_healthy no existe.
+      test: ["CMD-SHELL", "mysqladmin ping -h127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+      start_period: 25s
+    restart: unless-stopped
+
+volumes:
+  db_datos:

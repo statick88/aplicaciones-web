@@ -1,0 +1,15 @@
+﻿@* Página de error genérica (heredada de la plantilla). *@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<section class="estado-vacio">
+    <h1>Algo salió mal</h1>
+    <p>@Model.Mensaje</p>
+    @if (Model.MostrarRequestId)
+    {
+        <p class="detalle-tecnico"><code>@Model.RequestId</code></p>
+    }
+    <p><a class="boton boton--secundario" href="/">Volver al listado de clientes</a></p>
+</section>
