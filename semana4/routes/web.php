@@ -1,16 +1,25 @@
 <?php
 
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\EditorialController;
+use App\Http\Controllers\LectorController;
+use App\Http\Controllers\LibroController;
+use App\Http\Controllers\PrestamoController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Ruta raíz mínima: bootstrap/app.php apunta `web:` a este archivo, que el
-| candidato no contenía, así que el arranque de Laravel fallaba al cargar
-| las rutas y GET / respondía 404 (tests/Feature/ExampleTest).
-|
-*/
+Route::view('/', 'home')->name('home');
 
-Route::get('/', fn (): string => 'Semana 4 — scaffolding Laravel')->name('home');
+// `Str::singular()` produce "lectore"/"editoriale" para estos plurales en
+// inglés; sin `parameters()` el binding implícito por nombre no casa con
+// los métodos del controlador ($lector, $editorial...) y estos reciben un
+// modelo vacío. Se fija el nombre del parámetro en las 5 rutas.
+Route::resource('editoriales', EditorialController::class)
+    ->parameters(['editoriales' => 'editorial']);
+Route::resource('categorias', CategoriaController::class)
+    ->parameters(['categorias' => 'categoria']);
+Route::resource('libros', LibroController::class)
+    ->parameters(['libros' => 'libro']);
+Route::resource('lectores', LectorController::class)
+    ->parameters(['lectores' => 'lector']);
+Route::resource('prestamos', PrestamoController::class)
+    ->parameters(['prestamos' => 'prestamo']);
