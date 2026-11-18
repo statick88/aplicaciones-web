@@ -1,0 +1,40 @@
+# =====================================================================
+# .dockerignore — contexto de build de la Semana 4
+#
+# Consigna de las semanas anteriores aplicada aquí: "Los artefactos de
+# gentle-ai no se cargan". El contexto de build es este directorio.
+# =====================================================================
+
+# Artefactos de gentle-ai / agentes
+.gentle-ai/
+gentle-ai/
+.git/
+.atl/
+.engram/
+.odd/
+odd/
+.gentle-shell/
+.gentle-dot/
+.playwright-cli/
+.playwright-mcp/
+
+# Dependencias: se instalan dentro del contenedor con `composer install`
+# en el arranque de compose (el código se monta por bind mount).
+vendor/
+node_modules/
+
+# Entorno y secretos locales
+.env
+.env.*
+!.env.example
+
+# Estado y basura
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+bootstrap/cache/*.php
+*.log
+.DS_Store
+tests/.phpunit.result.cache
+.phpunit.cache/

@@ -1,0 +1,74 @@
+# =====================================================================
+# Semana 4 — Tarea 1: sistema con scaffolding (Laravel + MySQL)
+#
+# Servicios:
+#   app   → aplicación Laravel (scaffolding de artisan) en 127.0.0.1:8082
+#   mysql → MySQL 8.4 en 127.0.0.1:3308 (semana2: 3306, semana3: 3307)
+#
+# Los puertos se publican solo en loopback: entorno académico local.
+# =====================================================================
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # El usuario del host (1000:1000) para que vendor/ y storage/
+    # creados por el contenedor sigan siendo editables desde el host.
+    user: "1000:1000"
+    ports:
+      - "127.0.0.1:8082:8082"
+    volumes:
+      # El código se edita en el host y se refleja en el contenedor.
+      - .:/var/www/html
+    environment:
+      # Sobrescribe el .env: la aplicación dentro de compose siempre
+      # habla con el servicio mysql, nunca con localhost.
+      APP_ENV: local
+      APP_URL: http://127.0.0.1:8082
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_DATABASE: semana4
+      DB_USERNAME: semana4
+      DB_PASSWORD: semana4_dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+    # Arranque idempotente: crea .env con APP_KEY si falta (en un clone
+    # fresco no hay .env y sin clave el primer request falla al cifrar
+    # la cookie de sesión), instala dependencias, aplica migraciones
+    # (scaffolding → esquema) y levanta el servidor de desarrollo.
+    # `--no-reload` es imprescindible: sin él, `artisan serve` solo
+    # reenvía al subproceso `php -S` una lista blanca de variables
+    # (APP_ENV, LARAVEL_SAIL...) y DB_* se pierde; el hijo cae a .env
+    # (sqlite) y los índices responden 500. Con --no-reload se reenvía
+    # el entorno completo de compose.
+    command: >
+      sh -c "test -f .env || cp .env.example .env
+      && composer install --no-interaction --prefer-dist --no-progress
+      && { grep -q ^APP_KEY=base64:. .env || php artisan key:generate --force; }
+      && php artisan migrate --force
+      && php artisan db:seed --force
+      && php artisan serve --no-reload --host=0.0.0.0 --port=8082"
+
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "127.0.0.1:3308:3306"
+    environment:
+      MYSQL_DATABASE: semana4
+      MYSQL_USER: semana4
+      MYSQL_PASSWORD: semana4_dev
+      MYSQL_ROOT_PASSWORD: root_dev
+    volumes:
+      # Los datos sobreviven a `docker compose down` (sin -v), como en
+      # las semanas anteriores.
+      - db_datos:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  db_datos:
