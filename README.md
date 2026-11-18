@@ -48,7 +48,8 @@ Síntesis de la sección **4. Contenidos de la asignatura** del sílabo, página
 | **Semana 1** | Web personal con HTML/CSS y calculadora PHP: operaciones aritméticas, validación, entorno Docker y pruebas automatizadas. | [Ver práctica y ejecución](semana1/README.md) |
 | **Semana 2** | CRUD de clientes con POO, contrato de repositorio, adaptadores en memoria y MariaDB, formularios, validación, Docker Compose, pruebas unitarias y E2E, y capturas de SQLTools con identidad UNIANDES. | [Ver práctica, consultas SQL y evidencias](semana2/README.md) |
 | **Semana 3** | CRUD web en C# con ASP.NET Core MVC, 12 campos, MySQL, Docker Compose, UTF-8, 44 pruebas unitarias y E2E contra una base aislada. | [Ver ejecución, arquitectura y evidencias](semana3/README.md) |
-| **Semanas 4–8** | Contenidos planificados; todavía no hay entregas semanales independientes en este repositorio. | Consultar la planificación anterior. |
+| **Semana 4** | Sistema de biblioteca con scaffolding de Laravel: 5 entidades de máximo 5 atributos cada una, relacionadas entre sí, CRUD completo con validación, MySQL, Docker Compose y 22 pruebas automatizadas. | [Ver ejecución, arquitectura y evidencias](semana4/README.md) |
+| **Semanas 5–8** | Contenidos planificados; todavía no hay entregas semanales independientes en este repositorio. | Consultar la planificación anterior. |
 | **Semana 9** | Evaluación final prevista en el sílabo; no se registra aquí una evaluación realizada. | Según las instrucciones del docente. |
 
 **Relación entre planificación y práctica:** la consigna desarrollada en Semana 2 pide crear el objeto `Cliente` y sus métodos CRUD usando POO. Por eso la implementación ya utiliza POO y operaciones de base de datos que el sílabo profundiza en las semanas 3–6. La Semana 3 se entrega de forma independiente con C# y MySQL según su consigna; las semanas posteriores conservan su estado planificado.
@@ -70,9 +71,21 @@ Síntesis de la sección **4. Contenidos de la asignatura** del sílabo, página
     └── tests/
 ```
 
+Y la entrega más reciente:
+
+```text
+semana4/            # Sistema de biblioteca con scaffolding de Laravel
+├── README.md       # Ejecución, entidades, pruebas y evidencias
+├── app/            # Modelos, controladores resource y Form Requests
+├── database/       # Migraciones, factories y seeders
+├── docs/evidencias/# Capturas y salida de la suite
+├── resources/      # Vistas Blade con identidad UNIANDES
+└── tests/          # Estructura, relaciones y CRUD HTTP
+```
+
 Cada práctica mantiene su propio entorno y sus instrucciones. Para comenzar, abrir el README de la semana correspondiente. **No levantar ambas configuraciones Docker simultáneamente con sus puertos predeterminados:** las dos utilizan el puerto web `8080`.
 
-Semana 3 usa los puertos web `8081` y MySQL `3307`, separados de Semana 2. Los entornos son de desarrollo académico local, no de producción. Sus instrucciones detallan las credenciales de desarrollo, los puertos publicados y la conservación del volumen de datos.
+Semana 3 usa los puertos web `8081` y MySQL `3307`, separados de Semana 2. Semana 4 usa los puertos web `8082` y MySQL `3308`, separados de ambas. Los entornos son de desarrollo académico local, no de producción. Sus instrucciones detallan las credenciales de desarrollo, los puertos publicados y la conservación del volumen de datos.
 
 ## Evaluaciones
 
