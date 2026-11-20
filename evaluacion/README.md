@@ -33,6 +33,10 @@ docker compose down
 
 La base inicia vacía: primero registrar vehículos y clientes. Los datos se mantienen en el volumen propio del proyecto.
 
+## Identidad y accesibilidad
+
+La cabecera utiliza el logotipo institucional local de UNIANDES. La interfaz incluye un enlace para saltar al contenido principal, foco visible para teclado, pestañas de módulo con estado activo, instrucciones en los formularios y regiones de tabla desplazables en pantallas estrechas.
+
 ## Capturas del funcionamiento
 
 Capturas reales del navegador durante el uso del sistema local, con datos de demostración.

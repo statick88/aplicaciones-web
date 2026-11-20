@@ -112,19 +112,25 @@ $today = (new DateTimeImmutable('today'))->format('Y-m-d');
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Saltar al contenido principal</a>
 <header class="site-header">
-  <div class="shell">
-    <p class="eyebrow">UNIANDES</p>
-    <h1>Evaluación Parcial 1</h1>
-    <p class="subtitle">Sistema de gestión de alquiler de vehículos</p>
-    <nav aria-label="Módulos">
+  <div class="shell header-content">
+    <div class="institutional-identity">
+      <img class="institutional-logo" src="/logo-uniandes.png" alt="Logotipo institucional de UNIANDES" width="1024" height="368">
+      <div>
+        <p class="eyebrow">Universidad Regional Autónoma de los Andes · Aplicaciones Web</p>
+        <h1>Evaluación Parcial 1</h1>
+        <p class="subtitle">Sistema de gestión de alquiler de vehículos</p>
+      </div>
+    </div>
+    <nav class="module-nav" aria-label="Módulos">
       <?php foreach (['alquileres' => 'Alquileres', 'vehiculos' => 'Vehículos', 'clientes' => 'Clientes'] as $key => $label): ?>
         <a href="/?tab=<?= $key ?>"<?= $tab === $key ? ' aria-current="page"' : '' ?>><?= $label ?></a>
       <?php endforeach; ?>
     </nav>
   </div>
 </header>
-<main class="shell">
+<main id="main-content" class="shell" tabindex="-1">
   <?php if ($databaseError): ?>
     <section class="notice error" role="alert">
       <h2>Servicio no disponible</h2>
@@ -141,6 +147,7 @@ $today = (new DateTimeImmutable('today'))->format('Y-m-d');
     <?php if ($tab === 'alquileres'): ?>
       <section class="panel" aria-labelledby="rental-title">
         <h2 id="rental-title">Registrar alquiler</h2>
+        <p class="module-help">Asigne un vehículo disponible a un cliente registrado e indique la fecha de inicio.</p>
         <?php if (!$availableVehicles || !$clients): ?>
           <p class="empty">
             Para registrar un alquiler necesita <?= !$availableVehicles ? 'un vehículo disponible' : '' ?><?= !$availableVehicles && !$clients ? ' y ' : '' ?><?= !$clients ? 'un cliente registrado' : '' ?>.
@@ -152,6 +159,7 @@ $today = (new DateTimeImmutable('today'))->format('Y-m-d');
           </p>
         <?php else: ?>
           <form action="/api.php" method="post" aria-label="Registrar alquiler">
+            <p class="form-guidance"><span aria-hidden="true">*</span> Campos obligatorios.</p>
             <input type="hidden" name="csrf" value="<?= escape($_SESSION['csrf']) ?>">
             <input type="hidden" name="action" value="crear_alquiler">
             <div class="form-grid">
@@ -189,11 +197,13 @@ $today = (new DateTimeImmutable('today'))->format('Y-m-d');
 
       <section class="panel" aria-labelledby="rental-list-title">
         <h2 id="rental-list-title">Alquileres registrados</h2>
+        <p class="module-help">Consulte el historial y registre la devolución de los alquileres que siguen activos.</p>
         <?php if (!$rentals): ?>
           <p class="empty">Aún no hay alquileres registrados.</p>
         <?php else: ?>
-          <div class="table-scroll">
+          <div class="table-scroll" role="region" aria-label="Desplace horizontalmente para ver la tabla completa" tabindex="0">
             <table>
+              <caption>Historial de alquileres registrados</caption>
               <thead>
                 <tr><th>ID</th><th>Vehículo</th><th>Cliente</th><th>Inicio</th><th>Estado</th><th>Devolución</th></tr>
               </thead>
@@ -237,7 +247,9 @@ $today = (new DateTimeImmutable('today'))->format('Y-m-d');
     <?php if ($tab === 'vehiculos'): ?>
       <section class="panel" aria-labelledby="vehicle-form-title">
         <h2 id="vehicle-form-title"><?= $editingVehicle ? 'Editar vehículo' : 'Registrar vehículo' ?></h2>
+        <p class="module-help">Mantenga actualizada la información y disponibilidad de la flota.</p>
         <form action="/api.php" method="post" aria-label="<?= $editingVehicle ? 'Editar vehículo' : 'Registrar vehículo' ?>">
+          <p class="form-guidance"><span aria-hidden="true">*</span> Campos obligatorios.</p>
           <input type="hidden" name="csrf" value="<?= escape($_SESSION['csrf']) ?>">
           <input type="hidden" name="action" value="guardar_vehiculo">
           <?php if ($editingVehicle): ?>
@@ -262,11 +274,13 @@ $today = (new DateTimeImmutable('today'))->format('Y-m-d');
 
       <section class="panel" aria-labelledby="vehicle-list-title">
         <h2 id="vehicle-list-title">Vehículos registrados</h2>
+        <p class="module-help">Revise la disponibilidad antes de iniciar un nuevo alquiler.</p>
         <?php if (!$vehicles): ?>
           <p class="empty">Aún no hay vehículos registrados.</p>
         <?php else: ?>
-          <div class="table-scroll">
+          <div class="table-scroll" role="region" aria-label="Desplace horizontalmente para ver la tabla completa" tabindex="0">
             <table>
+              <caption>Vehículos registrados y su disponibilidad</caption>
               <thead>
                 <tr><th>ID</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Disponibilidad</th><th>Acciones</th></tr>
               </thead>
@@ -299,7 +313,9 @@ $today = (new DateTimeImmutable('today'))->format('Y-m-d');
     <?php if ($tab === 'clientes'): ?>
       <section class="panel" aria-labelledby="client-form-title">
         <h2 id="client-form-title"><?= $editingClient ? 'Editar cliente' : 'Registrar cliente' ?></h2>
+        <p class="module-help">Registre los datos de contacto y una licencia única para cada cliente.</p>
         <form action="/api.php" method="post" aria-label="<?= $editingClient ? 'Editar cliente' : 'Registrar cliente' ?>">
+          <p class="form-guidance"><span aria-hidden="true">*</span> Campos obligatorios.</p>
           <input type="hidden" name="csrf" value="<?= escape($_SESSION['csrf']) ?>">
           <input type="hidden" name="action" value="guardar_cliente">
           <?php if ($editingClient): ?>
@@ -318,11 +334,13 @@ $today = (new DateTimeImmutable('today'))->format('Y-m-d');
 
       <section class="panel" aria-labelledby="client-list-title">
         <h2 id="client-list-title">Clientes registrados</h2>
+        <p class="module-help">Verifique los datos de los clientes antes de asignarles un vehículo.</p>
         <?php if (!$clients): ?>
           <p class="empty">Aún no hay clientes registrados.</p>
         <?php else: ?>
-          <div class="table-scroll">
+          <div class="table-scroll" role="region" aria-label="Desplace horizontalmente para ver la tabla completa" tabindex="0">
             <table>
+              <caption>Clientes registrados y datos de contacto</caption>
               <thead>
                 <tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>Licencia</th><th>Teléfono</th><th>Acciones</th></tr>
               </thead>
