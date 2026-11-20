@@ -16,11 +16,13 @@ No se confirmó ningún defecto de aplicación de severidad CRÍTICA o ALTA. El 
 
 ## 2. Estado inicial y trazabilidad
 
-La ruta inicial era `evaluacion/` y fue renombrada de forma autorizada a `Evaluacion Parcial 1/`. El punto de partida fue una copia limpia de la rama `main` en el commit base indicado. La rama de trabajo es `audit/evaluacion-alquileres`.
+La ruta inicial era `evaluacion/`; se renombró a `Evaluacion Parcial 1/` y luego, por corrección expresa del nombre, a `evaluacion-parcial-1/`. Este último es el nombre definitivo. El punto de partida fue una copia limpia de la rama `main` en el commit base indicado. La rama de trabajo es `audit/evaluacion-alquileres`.
 
 El software auditado corresponde al SHA `15c88dd75fa7f327feff005872f2f3982c9cb930`; este informe no atribuye sus resultados a un SHA futuro. El cambio de nombre conserva el nombre Compose `evaluacion`, por lo que no deriva un espacio de nombres o volumen nuevo por el nombre de carpeta.
 
 La revisión de código confirmó PHP 8.5/Apache, MySQL 8.4, consultas preparadas, escape de salida, token de formulario, transacciones, bloqueos de vehículo, clave única para alquiler activo y claves foráneas restrictivas.
+
+La normalización final del nombre de carpeta no modifica PHP, SQL ni CSS respecto del commit de software auditado. El nombre Compose sigue siendo `evaluacion`, con los mismos volúmenes. Una revisión independiente adicional confirmó las rutas definitivas de montaje, la configuración Compose, los dos volúmenes conservados y HTTP 200 tanto operativo como aislado. No se atribuye a esta revisión de nombre una nueva ejecución de las pruebas que modifican datos.
 
 ## 3. Cambios mínimos aplicados
 
