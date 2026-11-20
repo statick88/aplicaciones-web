@@ -64,8 +64,6 @@ La comprobación local aislada registró estos resultados:
 - 10 comprobaciones de navegador (`B01`–`B10`): aprobadas.
 - 2 contratos de apoyo: aprobados.
 
-El detalle sanitizado de entradas, resultados obtenidos y estados está en [docs/evidencias/resultados-auditoria.json](docs/evidencias/resultados-auditoria.json). El informe con la matriz y alcance está en [docs/INFORME_AUDITORIA_FINAL.md](docs/INFORME_AUDITORIA_FINAL.md).
-
 ### Capturas verificadas
 
 | Vista | Captura |
@@ -87,8 +85,8 @@ El detalle sanitizado de entradas, resultados obtenidos y estados está en [docs
 
 ## Alcance y límites conocidos
 
-Es un entorno académico local: no incluye autenticación ni despliegue público. Los servicios se exponen en loopback; la base de datos no requiere un puerto de host para el funcionamiento comprobado. Los datos de demostración de la auditoría son ficticios.
+Es un entorno académico local: no incluye autenticación ni despliegue público. Los servicios se exponen en loopback; la base de datos no requiere un puerto de host para el funcionamiento comprobado. Los datos de demostración son ficticios.
 
-Los guiones de comprobación automatizada se conservaron solo de forma local por una restricción previa del usuario; no se incluyen como material publicado ni se afirma que un clon nuevo pueda ejecutarlos. El JSON sanitizado y las capturas permiten inspeccionar la evidencia publicada.
+Los guiones de comprobación automatizada se conservaron solo de forma local por una restricción previa del usuario; no se incluyen como material publicado ni se afirma que un clon nuevo pueda ejecutarlos. Las capturas permiten inspeccionar la evidencia publicada.
 
 Repositorio canónico: <https://github.com/statick88/aplicaciones-web>
