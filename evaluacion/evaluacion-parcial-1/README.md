@@ -16,7 +16,7 @@ El archivo Compose declara el nombre de proyecto estable `evaluacion`; por ello 
 Desde la raíz del repositorio:
 
 ```bash
-cd evaluacion-parcial-1
+cd evaluacion/evaluacion-parcial-1
 docker compose config
 docker compose up -d --build --wait
 docker compose ps

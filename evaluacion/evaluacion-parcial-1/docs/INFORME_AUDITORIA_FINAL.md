@@ -16,7 +16,7 @@ No se confirmó ningún defecto de aplicación de severidad CRÍTICA o ALTA. El 
 
 ## 2. Estado inicial y trazabilidad
 
-La ruta inicial era `evaluacion/`; se renombró a `Evaluacion Parcial 1/` y luego, por corrección expresa del nombre, a `evaluacion-parcial-1/`. Este último es el nombre definitivo. El punto de partida fue una copia limpia de la rama `main` en el commit base indicado. La rama de trabajo es `audit/evaluacion-alquileres`.
+La ruta inicial era `evaluacion/`; se renombró a `Evaluacion Parcial 1/` y luego, por corrección expresa del nombre, a `evaluacion-parcial-1/`. Una corrección posterior fijó la ruta completa definitiva en `evaluacion/evaluacion-parcial-1/`. El punto de partida fue una copia limpia de la rama `main` en el commit base indicado. La rama de trabajo es `audit/evaluacion-alquileres`.
 
 El software auditado corresponde al SHA `15c88dd75fa7f327feff005872f2f3982c9cb930`; este informe no atribuye sus resultados a un SHA futuro. El cambio de nombre conserva el nombre Compose `evaluacion`, por lo que no deriva un espacio de nombres o volumen nuevo por el nombre de carpeta.
 
@@ -106,7 +106,7 @@ No hay defecto confirmado de aplicación CRÍTICO o ALTO. El primer fallo de con
 
 Verificación independiente final: PASS, sin bloqueos. Se contrastaron los 17 registros T01–T16/C01 y las 10 comprobaciones B01–B10 con el JSON publicado; se repitieron dos contratos locales, cuatro verificaciones de sintaxis PHP, la validación Compose y HTTP 200. Se comprobaron salud, red interna, límites y volumen conservado. No se repitieron mutaciones de datos durante esa revisión.
 
-La rama `audit/evaluacion-alquileres` se publicó y su SHA se confirmó contra el remoto. La entrega está disponible en el [Pull Request #1](https://github.com/statick88/aplicaciones-web/pull/1). `main` permanece en `06bb4a2a59b2d880fce7b22a5df4632a00f79f93`: no se empujó directamente a esa rama ni se fusionó el PR. La aprobación y la eventual fusión siguen siendo decisiones del propietario.
+La rama `audit/evaluacion-alquileres` se publicó y su SHA se confirmó contra el remoto. La entrega está disponible en el [Pull Request #1](https://github.com/statick88/aplicaciones-web/pull/1). Durante la auditoría inicial `main` se conservó en `06bb4a2a59b2d880fce7b22a5df4632a00f79f93`. Posteriormente el propietario autorizó expresamente el cambio a la ruta anidada y el merge/push. El estado final y el commit de integración se consultan en el PR #1; no se atribuye a este informe un SHA de fusión todavía no generado.
 
 No se identifican riesgos funcionales pendientes dentro del alcance académico comprobado. Las medidas de producción como autenticación obligatoria o TLS no son requisitos de esta evaluación y no forman parte de esta estimación.
 
