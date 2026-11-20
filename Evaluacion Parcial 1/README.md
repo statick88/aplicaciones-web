@@ -1,83 +1,94 @@
 # Evaluación Parcial 1 — Alquiler de vehículos
 
-Sistema académico en **PHP 8.5, Apache y MySQL 8.4** para gestionar vehículos, clientes, alquileres y devoluciones. No requiere frameworks ni dependencias externas.
+Sistema académico para gestionar vehículos, clientes, alquileres y devoluciones. Su objetivo es registrar y consultar la operación de alquiler, conservar el historial y evitar que un vehículo tenga dos alquileres activos simultáneamente.
 
-## Ejecutar
+## Tecnologías y requisitos
 
-Desde este directorio, con Docker y Docker Compose instalados:
+- PHP 8.5 con Apache.
+- MySQL 8.4.
+- Docker Engine y Docker Compose.
+- Un navegador web para la interfaz.
+
+El archivo Compose declara el nombre de proyecto estable `evaluacion`; por ello el espacio de nombres y el volumen de datos no dependen del nombre de esta carpeta.
+
+## Inicio rápido
+
+Desde la raíz del repositorio:
 
 ```bash
+cd "Evaluacion Parcial 1"
+docker compose config
 docker compose up -d --build --wait
+docker compose ps
+curl -i http://127.0.0.1:8083/
 ```
 
-Abrir **http://127.0.0.1:8083**. MySQL está disponible en `127.0.0.1:3309`, con base y usuario `evaluacion`. Las claves de `compose.yaml` son valores públicos de desarrollo local, no credenciales de producción.
-
-El esquema se crea automáticamente cuando MySQL inicializa un volumen nuevo. Si el entorno ya estaba creado con la página inicial, aplicar las tablas sin borrar datos:
-
-```bash
-docker compose exec -T mysql sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql --default-character-set=utf8mb4 -uroot evaluacion' < database/schema.sql
-```
-
-Detener conservando los datos:
+Abra `http://127.0.0.1:8083/` en el navegador. Para detener los servicios sin borrar los datos:
 
 ```bash
 docker compose down
 ```
 
+El esquema se inicializa al crear un volumen nuevo. Si ya existe una base de datos de este proyecto y hace falta aplicar el esquema idempotente sin borrar datos, ejecute:
+
+```bash
+docker compose exec -T mysql sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql --default-character-set=utf8mb4 -uroot evaluacion' < database/schema.sql
+```
+
 ## Uso
 
-1. En **Vehículos**, registrar marca, modelo, año y disponibilidad. Se pueden editar y eliminar vehículos sin alquileres asociados.
-2. En **Clientes**, registrar nombre, apellido, licencia y teléfono. La licencia es única. Se pueden editar y eliminar clientes sin alquileres asociados.
-3. En **Alquileres**, elegir un cliente y un vehículo disponible e indicar la fecha de inicio.
-4. Registrar la devolución con una fecha igual o posterior al inicio. El vehículo vuelve a estar disponible.
+1. En **Vehículos**, registre marca, modelo, año y disponibilidad; edite o elimine solo vehículos sin historial de alquileres.
+2. En **Clientes**, registre nombre, apellido, licencia única y teléfono; edite o elimine solo clientes sin historial.
+3. En **Alquileres**, seleccione un vehículo disponible, un cliente y una fecha de inicio.
+4. Consulte el historial de alquileres y registre la devolución con una fecha igual o posterior al inicio.
+5. Compruebe las eliminaciones válidas con una entidad sin historial; una entidad referenciada por un alquiler, incluso devuelto, se rechaza para preservar el historial.
 
-La base inicia vacía: primero registrar vehículos y clientes. Los datos se mantienen en el volumen propio del proyecto.
+Las validaciones muestran un mensaje comprensible y, ante un formulario rechazado, conservan sus valores. La interfaz dispone de enlace para saltar al contenido principal, foco de teclado y tablas desplazables en pantallas estrechas.
 
-## Identidad y accesibilidad
+## Modelo de datos
 
-La cabecera utiliza el logotipo institucional local de UNIANDES. La interfaz incluye un enlace para saltar al contenido principal, foco visible para teclado, pestañas de módulo con estado activo, instrucciones en los formularios y regiones de tabla desplazables en pantallas estrechas.
-
-## Capturas del funcionamiento
-
-Capturas reales del navegador durante el uso del sistema local, con datos de demostración.
-
-| Vista | Captura |
-| --- | --- |
-| Registro y listado de vehículos | [Vehículos](docs/capturas/vehiculos.png) |
-| Registro y listado de clientes | [Clientes](docs/capturas/clientes.png) |
-| Alquiler registrado y activo | [Alquiler activo](docs/capturas/alquiler-activo.png) |
-| Devolución registrada | [Devolución](docs/capturas/devolucion.png) |
-| Presentación en pantalla móvil | [Vista móvil](docs/capturas/vista-movil.png) |
-
-![Alquiler activo](docs/capturas/alquiler-activo.png)
-
-![Devolución registrada](docs/capturas/devolucion.png)
-
-## Tablas
-
-| Tabla | Campos |
+| Tabla | Campos principales |
 | --- | --- |
 | `Vehiculos` | `vehiculo_id`, `marca`, `modelo`, `año`, `disponible` |
 | `Clientes` | `cliente_id`, `nombre`, `apellido`, `licencia`, `telefono` |
 | `Alquileres` | `alquiler_id`, `vehiculo_id`, `cliente_id`, `fecha_inicio`, `fecha_devolucion` |
 
-`Alquileres.vehiculo_activo` es una columna técnica generada: su índice único impide dos alquileres activos para el mismo vehículo. Las claves foráneas conservan el historial: no se eliminan vehículos ni clientes con alquileres asociados, aunque ya estén devueltos.
+`Alquileres.vehiculo_activo` es una columna generada con un índice único para impedir más de un alquiler activo por vehículo. Las claves foráneas usan restricción de borrado para conservar el historial.
 
-## Organización
+## Evidencia comprobada
 
-- `public/`: entrada web, formularios y recursos de presentación.
-- `src/`: conexión PDO, validación y operaciones transaccionales.
-- `database/schema.sql`: tablas, relaciones y restricciones.
-- `Dockerfile` y `compose.yaml`: entorno local reproducible.
+La comprobación local aislada registró estos resultados:
 
-## Reglas de funcionamiento
+- 16 casos funcionales obligatorios (`T01`–`T16`) y una comprobación de concurrencia (`C01`): aprobados.
+- 10 comprobaciones HTTP de regresión: aprobadas.
+- 10 comprobaciones de navegador (`B01`–`B10`): aprobadas.
+- 2 contratos de apoyo: aprobados.
 
-- Año entre 1886 y 2100; disponibilidad `0` o `1`.
-- Nombres, marca y modelo de hasta 80 caracteres; licencia de hasta 40; teléfono de 7 a 25 caracteres, con al menos 7 dígitos.
-- Un vehículo no disponible no admite alquileres nuevos.
-- El alquiler y el cambio de disponibilidad se guardan en una transacción con bloqueo del vehículo.
-- La devolución también es transaccional y no puede repetirse.
-- Las consultas usan parámetros preparados; las páginas escapan los datos y los formularios verifican su sesión antes de modificar registros.
-- Si un formulario es rechazado, se muestra el motivo y se conservan sus valores.
+El detalle sanitizado de entradas, resultados obtenidos y estados está en [docs/evidencias/resultados-auditoria.json](docs/evidencias/resultados-auditoria.json). El informe con la matriz y alcance está en [docs/INFORME_AUDITORIA_FINAL.md](docs/INFORME_AUDITORIA_FINAL.md).
 
-Entorno académico **solo local**, sin autenticación ni despliegue público. Los servicios se publican exclusivamente en la interfaz de loopback.
+### Capturas verificadas
+
+| Vista | Captura |
+| --- | --- |
+| Registro y listado de vehículos | [Vehículos](docs/capturas/vehiculos.png) |
+| Registro y listado de clientes | [Clientes](docs/capturas/clientes.png) |
+| Alquiler activo | [Alquiler activo](docs/capturas/alquiler-activo.png) |
+| Devolución registrada | [Devolución](docs/capturas/devolucion.png) |
+| Vista móvil | [Vista móvil](docs/capturas/vista-movil.png) |
+
+### Comprobación manual de la interfaz
+
+1. Inicie los servicios y abra la dirección local indicada arriba.
+2. Registre y edite un vehículo; confirme que el listado refleja los cambios.
+3. Registre y edite un cliente con una licencia única.
+4. Cree un alquiler y confirme que el vehículo queda como no disponible; registre la devolución y confirme que vuelve a estar disponible.
+5. Intente registrar una licencia duplicada y confirme el mensaje y la conservación de los valores enviados.
+6. Use `Tab` y `Enter` sobre el enlace de salto, y reduzca el navegador a 390 px para revisar los tres módulos.
+
+## Alcance y límites conocidos
+
+Es un entorno académico local: no incluye autenticación ni despliegue público. Los servicios se exponen en loopback; la base de datos no requiere un puerto de host para el funcionamiento comprobado. Los datos de demostración de la auditoría son ficticios.
+
+Los guiones de comprobación automatizada se conservaron solo de forma local por una restricción previa del usuario; no se incluyen como material publicado ni se afirma que un clon nuevo pueda ejecutarlos. El JSON sanitizado y las capturas permiten inspeccionar la evidencia publicada.
+
+Repositorio canónico: <https://github.com/statick88/aplicaciones-web>
