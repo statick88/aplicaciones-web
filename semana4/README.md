@@ -92,7 +92,7 @@ Capturas reales del stack levantado con `docker compose up`. Los datos visibles 
 | Listado de libros con relaciones a editorial y categoría | [libros.png](docs/evidencias/libros.png) |
 | Listado de préstamos con lector y libro | [prestamos.png](docs/evidencias/prestamos.png) |
 | Formulario de libro con selects de relación | [formulario-libro.png](docs/evidencias/formulario-libro.png) |
-| Salida completa de la suite (22/94) | [pruebas-phpunit.txt](docs/evidencias/pruebas-phpunit.txt) |
+| Salida completa de la suite (23/98) | [pruebas-phpunit.txt](docs/evidencias/pruebas-phpunit.txt) |
 
 ![Portada con navegación UNIANDES](docs/evidencias/home.png)
 
