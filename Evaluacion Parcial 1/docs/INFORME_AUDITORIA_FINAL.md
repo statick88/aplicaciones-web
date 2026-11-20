@@ -104,7 +104,7 @@ No hay defecto confirmado de aplicación CRÍTICO o ALTO. El primer fallo de con
 
 Verificación independiente final: PASS, sin bloqueos. Se contrastaron los 17 registros T01–T16/C01 y las 10 comprobaciones B01–B10 con el JSON publicado; se repitieron dos contratos locales, cuatro verificaciones de sintaxis PHP, la validación Compose y HTTP 200. Se comprobaron salud, red interna, límites y volumen conservado. No se repitieron mutaciones de datos durante esa revisión.
 
-La publicación de esta rama de auditoría también está pendiente. El código base ya existe en GitHub, pero esta rama no se ha publicado ni se afirma que esté fusionada o que `main` haya sido actualizado.
+La rama `audit/evaluacion-alquileres` se publicó y su SHA se confirmó contra el remoto. La entrega está disponible en el [Pull Request #1](https://github.com/statick88/aplicaciones-web/pull/1). `main` permanece en `06bb4a2a59b2d880fce7b22a5df4632a00f79f93`: no se empujó directamente a esa rama ni se fusionó el PR. La aprobación y la eventual fusión siguen siendo decisiones del propietario.
 
 No se identifican riesgos funcionales pendientes dentro del alcance académico comprobado. Las medidas de producción como autenticación obligatoria o TLS no son requisitos de esta evaluación y no forman parte de esta estimación.
 
@@ -118,11 +118,11 @@ No se identifican riesgos funcionales pendientes dentro del alcance académico c
 | Alquileres | 1.50/1.50 | `database/schema.sql`, `src/RentalService.php`, `public/api.php` | T07–T11, C01, B05–B06 | Completo; sin descuento observado |
 | Persistencia e integridad | 1.00/1.00 | `compose.yaml`, `database/schema.sql`, volumen conservado | T14, T16, C01; reinicio real de ambos servicios | Completo; sin descuento observado |
 | Funcionamiento y validación | 0.75/0.75 | `src/bootstrap.php`, `src/RentalService.php`, `public/api.php`, `public/index.php` | T09, T11–T15, regresión HTTP, B07–B10 | Completo; sin descuento funcional observado |
-| Repositorio y documentación | 0.75/0.75 | `README.md`, este informe, `docs/evidencias/resultados-auditoria.json`, cinco capturas | Revisión de enlaces y firmas PNG; publicación de rama pendiente | Estimación condicionada a publicar la rama; no atribuir todavía su contenido a `main` |
-| **Total estimado condicionado** | **7.00/7.00** | Evidencia verificable del software auditado | Revisión independiente y publicación aún pendientes | No equivale a una nota del docente |
+| Repositorio y documentación | 0.75/0.75 | `README.md`, este informe, `docs/evidencias/resultados-auditoria.json`, cinco capturas | Revisión de enlaces y firmas PNG; rama publicada y PR #1 abierto | Completo en la rama de auditoría; no atribuir su contenido a `main` antes de la aprobación |
+| **Total estimado condicionado** | **7.00/7.00** | Evidencia verificable del software auditado | Verificación independiente y publicación confirmadas | No equivale a una nota del docente |
 
-Esta es una estimación INTERNA, no una rúbrica oficial ni una calificación garantizada. La revisión independiente confirmó las comprobaciones esenciales. La estimación interna sigue condicionada a completar la publicación de la rama y no reemplaza la decisión ni la rúbrica del docente.
+Esta es una estimación INTERNA, no una rúbrica oficial ni una calificación garantizada. La revisión independiente confirmó las comprobaciones esenciales y la rama está publicada. La estimación interna no reemplaza la decisión ni la rúbrica del docente.
 
 ## 10. Recomendación de entrega
 
-La evidencia y la verificación independiente respaldan la entrega académica del software auditado. Resta confirmar la publicación de la rama de auditoría; no se empuja directamente a `main` ni se fusiona sin aprobación. La calificación final corresponde exclusivamente al docente.
+La evidencia, la verificación independiente y la publicación del PR respaldan presentar el software auditado para revisión académica. Se recomienda revisar el PR y compartir su enlace; no se fusiona sin aprobación. La calificación final corresponde exclusivamente al docente. Al cerrar las comprobaciones se detuvieron únicamente los contenedores de prueba, se conservaron ambos volúmenes y el entorno operativo continuó respondiendo HTTP 200.
