@@ -48,7 +48,7 @@ Síntesis de la sección **4. Contenidos de la asignatura** del sílabo, página
 | **Semana 1** | Web personal con HTML/CSS y calculadora PHP: operaciones aritméticas, validación, entorno Docker y pruebas automatizadas. | [Ver práctica y ejecución](semana1/README.md) |
 | **Semana 2** | CRUD de clientes con POO, contrato de repositorio, adaptadores en memoria y MariaDB, formularios, validación, Docker Compose, pruebas unitarias y E2E, y capturas de SQLTools con identidad UNIANDES. | [Ver práctica, consultas SQL y evidencias](semana2/README.md) |
 | **Semana 3** | CRUD web en C# con ASP.NET Core MVC, 12 campos, MySQL, Docker Compose, UTF-8, 44 pruebas unitarias y E2E contra una base aislada. | [Ver ejecución, arquitectura y evidencias](semana3/README.md) |
-| **Semana 4** | Sistema de biblioteca con scaffolding de Laravel: 5 entidades de máximo 5 atributos cada una, relacionadas entre sí, CRUD completo con validación, MySQL, Docker Compose y 22 pruebas automatizadas. | [Ver ejecución, arquitectura y evidencias](semana4/README.md) |
+| **Semana 4** | Sistema de biblioteca con scaffolding de Laravel: 5 entidades de máximo 5 atributos cada una, relacionadas entre sí, CRUD completo con validación, MySQL, Docker Compose y 23 pruebas automatizadas. | [Ver ejecución, arquitectura y evidencias](semana4/README.md) |
 | **Semanas 5–8** | Contenidos planificados; todavía no hay entregas semanales independientes en este repositorio. | Consultar la planificación anterior. |
 | **Semana 9** | Evaluación final prevista en el sílabo; no se registra aquí una evaluación realizada. | Según las instrucciones del docente. |
 

@@ -3,8 +3,8 @@ PHPUnit 12.5.44 by Sebastian Bergmann and contributors.
 Runtime:       PHP 8.5.12
 Configuration: /var/www/html/phpunit.xml
 
-......................                                            22 / 22 (100%)
+.......................                                           23 / 23 (100%)
 
-Time: 00:10.839, Memory: 54.50 MB
+Time: 00:10.989, Memory: 54.50 MB
 
-OK (22 tests, 94 assertions)
+OK (23 tests, 98 assertions)

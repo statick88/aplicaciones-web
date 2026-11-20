@@ -69,7 +69,7 @@ bash tests/run-tests.sh
 
 El script crea la base `semana4_test` si no existe y ejecuta PHPUnit dentro del contenedor (el host no tiene `pdo_mysql`). `tests/bootstrap.php` replica los `<env>` de `phpunit.xml` en `$_SERVER`, que es donde Laravel lee primero las variables de entorno.
 
-Resultado observado: **22 pruebas correctas, 94 aserciones, 0 fallidas**, código de salida 0. [Salida conservada](docs/evidencias/pruebas-phpunit.txt).
+Resultado observado: **23 pruebas correctas, 98 aserciones, 0 fallidas**, código de salida 0. [Salida conservada](docs/evidencias/pruebas-phpunit.txt).
 
 Cubre tres grupos:
 
@@ -102,7 +102,7 @@ Capturas reales del stack levantado con `docker compose up`. Los datos visibles 
 
 - Migraciones, modelos, factories y seeders de las 5 entidades.
 - CRUD completo (5 entidades × 4 operaciones) con validación y vistas con identidad UNIANDES.
-- Suite de 22 pruebas automatizadas contra MySQL con evidencia de ejecución.
+- Suite de 23 pruebas automatizadas contra MySQL con evidencia de ejecución.
 - Entorno Docker reproducible en 8082/3308.
 
 No incluye autenticación de usuarios, despliegue de producción ni evaluación del docente. La base usa datos de semilla académica.
