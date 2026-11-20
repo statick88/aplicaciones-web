@@ -1,0 +1,39 @@
+services:
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:8083:80"
+    volumes:
+      - ./public:/var/www/html:ro
+      - ./src:/var/www/src:ro
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_DATABASE: evaluacion
+      DB_USERNAME: evaluacion
+      DB_PASSWORD: evaluacion_local
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "127.0.0.1:3309:3306"
+    environment:
+      MYSQL_DATABASE: evaluacion
+      MYSQL_USER: evaluacion
+      MYSQL_PASSWORD: evaluacion_local
+      MYSQL_ROOT_PASSWORD: root_local
+    volumes:
+      - db_datos:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+volumes:
+  db_datos:

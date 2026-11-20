@@ -1,0 +1,6 @@
+tests/
+.local/
+vendor/
+.env
+.env.*
+*.log
