@@ -56,7 +56,7 @@ async page => {
   row = page.getByRole('row', { name: new RegExp(cliente.correo) });
   await row.waitFor();
   check(await row.getByText(`${cliente.nombre} actualizado`).count() === 1, 'client update works through the UI');
-  await page.screenshot({ path: 'aplicaciones-web/seman5/docs/clientes.png', fullPage: true });
+  await page.screenshot({ path: 'aplicaciones-web/seman5/docs/clientes-acciones-alineadas.png', fullPage: true });
 
   await page.reload();
   await page.getByRole('button', { name: 'Cerrar sesión' }).waitFor();
@@ -79,7 +79,7 @@ async page => {
   }));
   check(!mobile.horizontalOverflow, 'mobile 390px layout has no horizontal overflow');
   check(mobile.focusVisible, 'keyboard focus is visibly styled');
-  await page.screenshot({ path: 'aplicaciones-web/seman5/docs/mobile.png', fullPage: true });
+  await page.screenshot({ path: 'aplicaciones-web/seman5/docs/mobile-acciones-alineadas.png', fullPage: true });
   await page.setViewportSize({ width: 1280, height: 800 });
 
   await page.getByRole('link', { name: '← Volver a clientes' }).click();

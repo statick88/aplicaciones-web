@@ -59,7 +59,7 @@ async page => {
       check(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)),
         `${width}px: page has no horizontal overflow`);
       await page.screenshot({
-        path: `aplicaciones-web/seman5/docs/${width === 390 ? 'mobile' : 'clientes'}.png`,
+        path: `aplicaciones-web/seman5/docs/${width === 390 ? 'mobile' : 'clientes'}-acciones-alineadas.png`,
         fullPage: true,
       });
     }

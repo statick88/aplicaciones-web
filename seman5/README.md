@@ -97,9 +97,9 @@ Las capturas usan datos ficticios, eliminados después de la toma.
 
 ![Pantalla de inicio de sesión](docs/login.png)
 
-**Lista de clientes.** Tabla de registros con las acciones disponibles.
+**Lista de clientes.** Acciones Editar y Eliminar alineadas, con controles de la misma altura.
 
-![Lista de clientes](docs/clientes.png)
+![Lista de clientes con las acciones alineadas](docs/clientes-acciones-alineadas.png)
 
 **Formulario.** Edición de un registro ficticio con validación reactiva.
 
@@ -107,7 +107,7 @@ Las capturas usan datos ficticios, eliminados después de la toma.
 
 **Vista móvil.** La lista se adapta a una pantalla de 390 px de ancho.
 
-![Lista de clientes en móvil](docs/mobile.png)
+![Lista de clientes en móvil con las acciones alineadas](docs/mobile-acciones-alineadas.png)
 
 ## Referencia de clase
 Adaptado del instructor, commit
