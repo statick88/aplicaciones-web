@@ -1,0 +1,35 @@
+.actions-cell {
+  vertical-align: middle;
+}
+
+.actions {
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+}
+
+.actions a,
+.actions button {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  white-space: nowrap;
+}
+
+.actions a:hover,
+.actions button:hover {
+  background: #edf4f9;
+}
+
+@media (max-width: 600px) {
+  .actions-cell {
+    display: block;
+  }
+
+  .actions-cell::before {
+    content: none;
+  }
+}

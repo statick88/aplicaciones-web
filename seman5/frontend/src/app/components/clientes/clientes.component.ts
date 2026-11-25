@@ -7,6 +7,7 @@ import { ClienteService } from '../../services/cliente.service';
 @Component({
   selector: 'app-clientes',
   imports: [RouterLink],
+  styleUrl: './clientes.component.css',
   template: ` <section class="page" aria-labelledby="clientes-title">
     <div class="page-heading">
       <div>
@@ -49,11 +50,13 @@ import { ClienteService } from '../../services/cliente.service';
                 <td data-label="Nombre">{{ cliente.nombre }} {{ cliente.apellido }}</td>
                 <td data-label="Correo">{{ cliente.correo }}</td>
                 <td data-label="Teléfono">{{ cliente.telefono }}</td>
-                <td class="actions">
-                  <a [routerLink]="['/clientes', cliente.id, 'editar']">Editar</a
-                  ><button type="button" class="link danger" (click)="confirmarEliminar(cliente)">
-                    {{ confirmando() === cliente.id ? 'Confirmar eliminación' : 'Eliminar' }}
-                  </button>
+                <td class="actions-cell">
+                  <div class="actions">
+                    <a [routerLink]="['/clientes', cliente.id, 'editar']">Editar</a>
+                    <button type="button" class="link danger" (click)="confirmarEliminar(cliente)">
+                      {{ confirmando() === cliente.id ? 'Confirmar eliminación' : 'Eliminar' }}
+                    </button>
+                  </div>
                 </td>
               </tr>
             }
