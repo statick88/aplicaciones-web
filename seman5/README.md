@@ -1,15 +1,35 @@
+<p align="center">
+  <img src="frontend/public/logo-uniandes.png" alt="UNIANDES — Universidad Regional Autónoma de los Andes" width="280">
+</p>
+
 # Semana 5 — Clientes Angular y autenticación PHP
 
-CRUD de clientes con sesión por cookie, para práctica local con Docker; no es una
-configuración lista para producción.
+[Volver al portafolio](../README.md)
+
+CRUD completo de clientes con **Angular 22.3.0, Node 26 y pnpm 12.14**;
+API PHP y MariaDB en Docker Compose. El foco está en **interfaces, servicios y
+componentes**: listar, crear, editar y eliminar clientes después de iniciar sesión.
+Práctica académica local; no es una configuración lista para producción.
 
 ## Inicio rápido
+Se requiere Docker con Compose; Node y pnpm se ejecutan dentro de la imagen de
+construcción. Desde la raíz del repositorio:
 ```bash
-docker compose up --build
+cd seman5
+docker compose up -d --build --wait
 ```
-Abrí [http://localhost:8086](http://localhost:8086). nginx entrega Angular y
-reenvía `/api` al contenedor PHP en el mismo origen. La API queda sólo en
-`127.0.0.1:8085`. Para detenerlo: `docker compose down`.
+Creá una cuenta con el paso siguiente y abrí
+[http://localhost:8086](http://localhost:8086). nginx sirve Angular y reenvía
+`/api/` a PHP en el mismo origen. La API también está disponible en
+`http://127.0.0.1:8085`; MariaDB no publica un puerto en el host.
+Para detenerlo: `docker compose down`, conservando el volumen de datos.
+
+| Variable de Compose | Valor predeterminado | Uso |
+|---|---|---|
+| `WEB_PORT` | `8086` | Acceso al frontend |
+| `API_PORT` | `8085` | Acceso directo a la API |
+| `SESSION_TTL` | `1800` | Segundos de inactividad antes de vencer la sesión |
+| `COOKIE_SECURE` | `0` | HTTP local; usar `1` cuando se sirva mediante HTTPS |
 
 ## Crear una cuenta local
 No hay usuarios, contraseñas personales ni credenciales de inicio preconfiguradas.
@@ -41,32 +61,35 @@ No la pongas como argumento, en el historial ni en archivos versionados.
 ## Estructura docente
 ```text
 frontend/src/app/
-├── interfaces/    # modelos
-├── services/      # HTTP y estado de autenticación
-├── components/    # login y tabla/formulario de clientes
-├── guards/        # rutas con sesión
-└── interceptors/  # credenciales y errores
+├── interfaces/    # Cliente, ClienteInput, Usuario y respuestas de sesión
+├── services/      # ClienteService: CRUD; AuthService: sesión y login/logout
+├── components/    # Login, listado y formulario reactivo de clientes
+├── guards/        # Consulta de sesión antes de entrar a /clientes
+└── interceptors/  # withCredentials y redirección cuando la API responde 401
 ```
-La rúbrica menciona .NET; esta entrega adapta esas responsabilidades a PHP:
-API separada, sesión, validación y respuestas HTTP; Angular usa servicios,
-interceptor, guard y formularios reactivos.
+Las interfaces tipan los datos; los servicios concentran las peticiones HTTP;
+los componentes presentan los estados de carga, validación y errores. El CRUD
+usa `GET`, `POST`, `PUT` y `DELETE` sobre `/api/api.php`.
+La rúbrica menciona .NET; esta entrega conserva PHP según el ejemplo del docente,
+con API separada, sesión, validación y respuestas HTTP.
 
 ## Herramientas y pruebas
-Se requiere Docker Compose. El frontend usa Node 26, Angular 22.3.0 y pnpm
-12.14. Comprobación aislada de API:
+Desde `seman5/`, la comprobación HTTP crea y elimina su propio entorno aislado;
+no usa los datos del entorno normal:
 ```bash
 ./tests/run.sh
 ```
 Opcionalmente, con Node 26 en el host:
 ```bash
 cd frontend
-pnpm install
+pnpm install --frozen-lockfile
+pnpm test --watch=false
 pnpm build
-pnpm test
 ```
 La colección manual está en [tests/requests.http](tests/requests.http). Se
-observaron 9 pruebas Angular y 4 HTTP verdes. La demostración breve está en
-[demo](docs/demo.webm).
+verificaron 9 pruebas Angular, 4 HTTP, el build y el flujo de navegador:
+login, CRUD, restauración de sesión y logout. [Ver demo breve](docs/demo.webm).
+Las capturas usan datos ficticios, eliminados después de la toma.
 
 ## Capturas
 

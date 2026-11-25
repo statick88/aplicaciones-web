@@ -49,10 +49,11 @@ Síntesis de la sección **4. Contenidos de la asignatura** del sílabo, página
 | **Semana 2** | CRUD de clientes con POO, contrato de repositorio, adaptadores en memoria y MariaDB, formularios, validación, Docker Compose, pruebas unitarias y E2E, y capturas de SQLTools con identidad UNIANDES. | [Ver práctica, consultas SQL y evidencias](semana2/README.md) |
 | **Semana 3** | CRUD web en C# con ASP.NET Core MVC, 12 campos, MySQL, Docker Compose, UTF-8, 44 pruebas unitarias y E2E contra una base aislada. | [Ver ejecución, arquitectura y evidencias](semana3/README.md) |
 | **Semana 4** | Sistema de biblioteca con scaffolding de Laravel: 5 entidades de máximo 5 atributos cada una, relacionadas entre sí, CRUD completo con validación, MySQL, Docker Compose y 23 pruebas automatizadas. | [Ver ejecución, arquitectura y evidencias](semana4/README.md) |
-| **Semanas 5–8** | Contenidos planificados; todavía no hay entregas semanales independientes en este repositorio. | Consultar la planificación anterior. |
+| **Semana 5** | CRUD de clientes con Angular 22.3.0, interfaces, servicios y componentes; API PHP, autenticación por sesión, formularios reactivos, MariaDB y Docker Compose. Node 26 y pnpm; pruebas, demo y capturas con identidad UNIANDES. | [Ver ejecución, pruebas y capturas](seman5/README.md) |
+| **Semanas 6–8** | Contenidos planificados; todavía no hay entregas semanales independientes en este repositorio. | Consultar la planificación anterior. |
 | **Semana 9** | Evaluación final prevista en el sílabo; no se registra aquí una evaluación realizada. | Según las instrucciones del docente. |
 
-**Relación entre planificación y práctica:** la consigna desarrollada en Semana 2 pide crear el objeto `Cliente` y sus métodos CRUD usando POO. Por eso la implementación ya utiliza POO y operaciones de base de datos que el sílabo profundiza en las semanas 3–6. La Semana 3 se entrega de forma independiente con C# y MySQL según su consigna; las semanas posteriores conservan su estado planificado.
+**Relación entre planificación y práctica:** la consigna desarrollada en Semana 2 pide crear el objeto `Cliente` y sus métodos CRUD usando POO. Por eso la implementación ya utiliza POO y operaciones de base de datos que el sílabo profundiza en las semanas 3–6. La Semana 3 utiliza C# y MySQL según su consigna; la Semana 4 aplica scaffolding con Laravel y la Semana 5 integra Angular con una API PHP basada en el ejemplo del docente. Las semanas 6–8 conservan su estado planificado.
 
 ## Navegar y ejecutar las prácticas
 
@@ -60,32 +61,36 @@ Síntesis de la sección **4. Contenidos de la asignatura** del sílabo, página
 .
 ├── README.md       # Presentación, planificación y avance del curso
 ├── semana1/        # Web personal y calculadora PHP
-│   └── README.md   # Objetivos, ejecución y pruebas de la práctica
 ├── semana2/        # CRUD de clientes con PHP y MariaDB
-    ├── README.md   # Ejecución, SQL, arquitectura y evidencias
-    ├── docs/       # Capturas del CRUD y SQLTools
-    └── tests/      # Pruebas unitarias, configuración y navegador
-└── semana3/        # CRUD de 12 campos con C#, ASP.NET Core y MySQL
-    ├── README.md   # Ejecución, arquitectura, pruebas y evidencias
-    ├── ClientesWeb/
-    └── tests/
+├── semana3/        # CRUD con C#, ASP.NET Core y MySQL
+├── semana4/        # Biblioteca con scaffolding de Laravel
+└── seman5/         # Clientes con Angular y autenticación PHP
+    ├── README.md   # Inicio rápido, cuenta local, pruebas y capturas
+    ├── frontend/   # Interfaces, servicios y componentes Angular
+    ├── backend/    # API PHP y sesiones
+    ├── database/   # Esquema de clientes y usuarios
+    ├── docs/       # Cuatro capturas y demo breve
+    └── tests/      # Pruebas HTTP y colección manual
 ```
 
-Y la entrega más reciente:
+Cada práctica tiene su propio README y entorno Docker. **Las semanas 1 y 2 comparten el puerto web `8080`: ejecutarlas por separado con su configuración predeterminada.**
 
-```text
-semana4/            # Sistema de biblioteca con scaffolding de Laravel
-├── README.md       # Ejecución, entidades, pruebas y evidencias
-├── app/            # Modelos, controladores resource y Form Requests
-├── database/       # Migraciones, factories y seeders
-├── docs/evidencias/# Capturas y salida de la suite
-├── resources/      # Vistas Blade con identidad UNIANDES
-└── tests/          # Estructura, relaciones y CRUD HTTP
+| Entrega | Acceso web | Otros puertos locales |
+|---|---|---|
+| Semana 3 | `http://localhost:8081` | MySQL: `3307` |
+| Semana 4 | `http://localhost:8082` | MySQL: `3308` |
+| Semana 5 | `http://localhost:8086` | API PHP: `8085`; MariaDB sin puerto publicado |
+
+Para ejecutar la entrega más reciente desde la raíz del repositorio:
+
+```bash
+cd seman5
+docker compose up -d --build --wait
 ```
 
-Cada práctica mantiene su propio entorno y sus instrucciones. Para comenzar, abrir el README de la semana correspondiente. **No levantar ambas configuraciones Docker simultáneamente con sus puertos predeterminados:** las dos utilizan el puerto web `8080`.
+Después, [crear una cuenta local](seman5/README.md#crear-una-cuenta-local) y abrir `http://localhost:8086`. Consultar sus [capturas](seman5/README.md#capturas) y [demo](seman5/docs/demo.webm).
 
-Semana 3 usa los puertos web `8081` y MySQL `3307`, separados de Semana 2. Semana 4 usa los puertos web `8082` y MySQL `3308`, separados de ambas. Los entornos son de desarrollo académico local, no de producción. Sus instrucciones detallan las credenciales de desarrollo, los puertos publicados y la conservación del volumen de datos.
+Los entornos son de desarrollo académico local, no de producción. `docker compose down` detiene Semana 5 sin eliminar su volumen de datos.
 
 ## Evaluaciones
 
