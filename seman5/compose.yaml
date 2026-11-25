@@ -1,0 +1,45 @@
+name: seman5
+services:
+  db:
+    image: mariadb:11.8
+    environment:
+      MARIADB_DATABASE: clientes
+      MARIADB_USER: clientes
+      # Public local-development value, never a production credential.
+      MARIADB_PASSWORD: local-development-only
+      MARIADB_RANDOM_ROOT_PASSWORD: "1"
+    volumes:
+      - datos:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  api:
+    build: ./backend
+    environment:
+      DB_HOST: db
+      DB_NAME: clientes
+      DB_USER: clientes
+      DB_PASS: local-development-only
+      SESSION_TTL: ${SESSION_TTL:-1800}
+      COOKIE_SECURE: ${COOKIE_SECURE:-0}
+    ports:
+      - "127.0.0.1:${API_PORT:-8085}:80"
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/auth.php') === false ? 1 : 0);"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    depends_on:
+      db:
+        condition: service_healthy
+  web:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8086}:80"
+    depends_on:
+      - api
+volumes:
+  datos:

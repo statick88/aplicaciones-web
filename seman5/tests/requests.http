@@ -1,0 +1,42 @@
+@base = http://localhost:8086/api
+@csrf = replace-with-XSRF-TOKEN-cookie
+@id = 1
+
+### 1. Initialize cookies (enable your HTTP client's cookie jar)
+GET {{base}}/auth.php
+
+### 2. Login with the account created by crear-usuario.php
+# Enter credentials interactively in your HTTP client; do not commit them.
+POST {{base}}/auth.php
+Content-Type: application/json
+X-XSRF-TOKEN: {{csrf}}
+
+{"correo": "your-email@example.com", "password": "your-local-password"}
+
+### 3. List clients
+GET {{base}}/api.php
+
+### 4. Create
+POST {{base}}/api.php
+Content-Type: application/json
+X-XSRF-TOKEN: {{csrf}}
+
+{"nombre":"Ana","apellido":"Pérez","correo":"ana@example.test","telefono":"0991234567"}
+
+### 5. Read
+GET {{base}}/api.php?id={{id}}
+
+### 6. Update
+PUT {{base}}/api.php?id={{id}}
+Content-Type: application/json
+X-XSRF-TOKEN: {{csrf}}
+
+{"nombre":"Ana María","apellido":"Pérez","correo":"ana@example.test","telefono":"0991234567"}
+
+### 7. Delete
+DELETE {{base}}/api.php?id={{id}}
+X-XSRF-TOKEN: {{csrf}}
+
+### 8. Logout
+DELETE {{base}}/auth.php
+X-XSRF-TOKEN: {{csrf}}

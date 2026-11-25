@@ -1,0 +1,21 @@
+<header class="site-header">
+  <a class="brand" routerLink="/clientes">
+    <img src="logo-uniandes.png" alt="Universidad Regional Autónoma de los Andes" />
+    <span>Clientes</span>
+  </a>
+  @if (auth.usuario(); as usuario) {
+    <div class="account">
+      <span>Hola, {{ usuario.nombre }}</span>
+      <button type="button" class="link" (click)="salir()" [disabled]="cerrandoSesion()">
+        {{ cerrandoSesion() ? 'Cerrando sesión…' : 'Cerrar sesión' }}
+      </button>
+    </div>
+  }
+</header>
+@if (errorDeSalida()) {
+  <aside class="logout-error" role="alert">
+    <span>{{ errorDeSalida() }}</span>
+    <button type="button" class="link" (click)="salir()">Reintentar</button>
+  </aside>
+}
+<router-outlet />
